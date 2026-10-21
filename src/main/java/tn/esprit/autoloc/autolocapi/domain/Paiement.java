@@ -33,4 +33,9 @@ public class Paiement {
 
     @Column(length = 100)
     private String referenceTransaction;
+
+    // FK vers contrat dans la table paiement
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_contrat", nullable = false)
+    private Contrat contrat;
 }

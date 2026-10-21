@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "client")
@@ -43,4 +45,10 @@ public class Client {
 
     @Column(nullable = false)
     private LocalDate dateExpirationPermis;
+
+    // Chargement client implique chargement de ses réservations (EAGER)
+    // Suppression client implique suppression de ses réservations (CASCADE ALL + orphanRemoval)
+    @OneToMany(mappedBy = "client", fetch = FetchType.EAGER,
+               cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Reservation> reservations = new ArrayList<>();
 }

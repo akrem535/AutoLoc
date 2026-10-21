@@ -32,4 +32,9 @@ public class Sinistre {
 
     @Column(length = 50)
     private String referenceAssurance;
+
+    // Un sinistre est lié à un véhicule
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_vehicule", nullable = false)
+    private Vehicule vehicule;
 }

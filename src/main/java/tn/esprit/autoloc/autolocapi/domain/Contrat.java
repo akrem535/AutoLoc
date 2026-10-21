@@ -6,6 +6,8 @@ import lombok.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "contrat")
@@ -43,6 +45,11 @@ public class Contrat {
 
     @Column(nullable = false, updatable = false)
     private LocalDateTime dateCreation;
+
+    // Chargement contrat implique chargement des paiements (EAGER)
+    @OneToMany(mappedBy = "contrat", fetch = FetchType.EAGER,
+               cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Paiement> paiements = new ArrayList<>();
 
     @PrePersist
     protected void onCreate() {

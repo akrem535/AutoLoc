@@ -35,6 +35,21 @@ public class Reservation {
     @Column(nullable = false, updatable = false)
     private LocalDateTime dateCreation;
 
+    // FK vers véhicule dans la table reservation
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_vehicule", nullable = false)
+    private Vehicule vehicule;
+
+    // FK vers client dans la table reservation
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_client", nullable = false)
+    private Client client;
+
+    // Relation OneToOne reservation -> contrat (FK id_contrat dans table reservation)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "id_contrat")
+    private Contrat contrat;
+
     @PrePersist
     protected void onCreate() {
         dateCreation = LocalDateTime.now();

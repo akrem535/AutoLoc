@@ -41,4 +41,9 @@ public class Employe {
 
     @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal salaire;
+
+    // Suppression agence n'implique pas suppression des employés (pas de cascade delete)
+    @ManyToOne(fetch = FetchType.LAZY, optional = true)
+    @JoinColumn(name = "id_agence")
+    private Agence agence;
 }

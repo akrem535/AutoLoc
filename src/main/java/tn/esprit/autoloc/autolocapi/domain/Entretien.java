@@ -35,4 +35,9 @@ public class Entretien {
     private String prestataire;
 
     private LocalDate prochaineEcheance;
+
+    // FK vers véhicule dans la table entretien
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_vehicule", nullable = false)
+    private Vehicule vehicule;
 }
