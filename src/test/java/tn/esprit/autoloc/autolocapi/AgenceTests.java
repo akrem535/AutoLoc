@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 @SpringBootTest
 public class AgenceTests {
 
-    // Dépôt de base (CrudRepository via interface mock interne)
+    // Dépôt de base (CrudRepository)
     @Autowired
     private AgenceRepositoryMock basicAgenceRepository;
 
@@ -26,13 +26,8 @@ public class AgenceTests {
     @Autowired
     private IAgenceRepository fullAgenceRepository;
 
-    // Interface mock qui hérite de CrudRepository
-    interface AgenceRepositoryMock extends CrudRepository<Agence, Long> {
-    }
-
     // ── Méthode privée utilitaire ────────────────────────────────────────────
     private void addAgence(CrudRepository<Agence, Long> repository) {
-        // Suffixe unique basé sur le timestamp pour éviter les doublons d'immatriculation
         int suffix = (int) System.currentTimeMillis();
 
         Vehicule v1 = new Vehicule();
@@ -90,7 +85,6 @@ public class AgenceTests {
                   .append("|").append(v.getImmatriculation()).append("\n");
             }
         }
-
         fail(sb.toString());
     }
 
@@ -117,7 +111,6 @@ public class AgenceTests {
               .append(" | ").append(agence.getNom())
               .append(" | ").append(agence.getVille()).append("\n");
         }
-
         fail(sb.toString());
     }
 
@@ -138,7 +131,10 @@ public class AgenceTests {
               .append(" | ").append(agence.getNom())
               .append(" | ").append(agence.getVille()).append("\n");
         }
-
         fail(sb.toString());
     }
+}
+
+// Interface en dehors de la classe — Spring Data peut la détecter comme bean
+interface AgenceRepositoryMock extends CrudRepository<Agence, Long> {
 }
