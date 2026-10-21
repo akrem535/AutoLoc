@@ -9,6 +9,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.CrudRepository;
 import tn.esprit.autoloc.autolocapi.domain.*;
 import tn.esprit.autoloc.autolocapi.repository.IAgenceRepository;
+import tn.esprit.autoloc.autolocapi.service.IAgenceService;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -25,6 +26,10 @@ public class AgenceTests {
     // Dépôt complet (JpaRepository)
     @Autowired
     private IAgenceRepository fullAgenceRepository;
+
+    // Service agence
+    @Autowired
+    private IAgenceService agenceService;
 
     // ── Méthode privée utilitaire ────────────────────────────────────────────
     private void addAgence(CrudRepository<Agence, Long> repository) {
@@ -132,6 +137,22 @@ public class AgenceTests {
               .append(" | ").append(agence.getVille()).append("\n");
         }
         fail(sb.toString());
+    }
+    // ── Test service ─────────────────────────────────────────────────────────
+    @Test
+    public void createAgence() {
+        int suffix = (int) System.currentTimeMillis();
+
+        Agence agence = new Agence();
+        agence.setNom("Agence Service Test");
+        agence.setAdresse("10 Rue de la Paix");
+        agence.setVille("Tunis");
+        agence.setTelephone("7100000" + (suffix % 100));
+
+        Agence saved = agenceService.create(agence);
+        fail("Agence créée avec id=" + saved.getIdAgence()
+            + " | nom=" + saved.getNom()
+            + " | ville=" + saved.getVille());
     }
 }
 
