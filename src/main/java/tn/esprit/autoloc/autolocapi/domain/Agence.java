@@ -2,6 +2,7 @@ package tn.esprit.autoloc.autolocapi.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,14 +34,13 @@ public class Agence {
     @Column(length = 100)
     private String email;
 
-    // Une agence possède plusieurs véhicules (EAGER : chargement d'une agence => chargement des véhicules)
-    // CascadeType.PERSIST/MERGE : l'ajout d'un véhicule implique la présence de son agence
+    
+    @JsonIgnore
     @OneToMany(mappedBy = "agence", fetch = FetchType.EAGER,
                cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<Vehicule> vehicules = new ArrayList<>();
 
-    // Une agence possède plusieurs employés (LAZY : chargement agence n'implique pas employés)
-    // Pas de cascade delete : suppression agence n'implique pas suppression des employés
+
     @OneToMany(mappedBy = "agence", fetch = FetchType.LAZY,
                cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<Employe> employes = new ArrayList<>();
